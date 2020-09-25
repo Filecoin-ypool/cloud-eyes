@@ -49,9 +49,13 @@
 
 <style scoped>
     .video-list {
-        margin: 82px 120px;
+        /*margin: 82px 120px;*/
+        margin: 50px 120px;
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
+        max-height: 350px;
+        overflow-y: scroll;
     }
 
     .video-list > div {
