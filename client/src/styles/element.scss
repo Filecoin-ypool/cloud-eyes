@@ -1,0 +1,244 @@
+//table
+.goodsDetails {
+  .el-table .el-table__body-wrapper tr td {
+    border-right: none !important;
+  }
+
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: none !important;
+  }
+
+  .el-table .el-table__header-wrapper tr th {
+    border-right: none !important;
+  }
+
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: none !important;
+  }
+
+  .el-table--border::after,
+  .el-table--group::after,
+  .el-table::before {
+    background: transparent;
+  }
+
+  .el-table .el-table__header-wrapper tr th {
+    background: #fff;
+  }
+}
+
+// .el-table {
+//   .el-table__header-wrapper {
+//     tr {
+//       th {
+//         background: #f5f5f5;
+//         color: #333;
+//         font-weight: 400;
+//         border-right: 1px dashed;
+//         border-color: #d9d9d9!important;
+//       }
+//     }
+//   }
+//   .el-table__body-wrapper {
+//     tr {
+//       td {
+//         border-right: 1px dashed;
+//         border-color: #d9d9d9!important;
+//       }
+//     }
+//   }
+// }
+
+// .el-table--border {
+//   border-color: #d9d9d9!important;
+// }
+
+// .el-table--border::after, .el-table--group::after, .el-table::before {
+//   background-color: #d9d9d9;
+// }
+
+//pagination
+.el-pagination {
+  text-align: center;
+  margin-top: 20px;
+
+  .el-pager {
+    .active {
+      background: #7C8A97;
+      color: #fff;
+    }
+
+    li {
+      min-width: 30px;
+      height: 30px;
+      line-height: 30px;
+      color: #808080;
+      font-weight: 400;
+      border-radius: 50%;
+      margin-right: 7px;
+
+      &:hover {
+        background: #EDEDED;
+        color: #808080;
+      }
+    }
+  }
+}
+
+.mall {
+  .el-pagination {
+
+    .btn-next,
+    .btn-prev {
+      background: #f5f5f5;
+    }
+  }
+}
+
+//计数器
+.el-input-number {
+  width: 144px;
+  line-height: 35px;
+
+  span {
+    line-height: 34px;
+  }
+}
+
+//data-picker
+.el-date-editor .el-range-separator {
+  padding: 0;
+}
+
+.el-date-editor--daterange.el-input__inner {
+  width: 300px;
+}
+
+//input
+.el-input {
+  input {
+    height: 36px;
+  }
+}
+
+.extractAddress,
+.receivables {
+  .el-input {
+    width: 300px !important;
+  }
+
+  .el-button {
+    margin-left: 50px;
+    width: 80px;
+    height: 34px;
+    padding: 0;
+    color: #2DAFE0;
+    border: 1px solid #2DAFE0;
+    background: rgba(237, 250, 255, 1);
+    border-radius: 0;
+  }
+
+  .el-button:hover {
+    background: #2DAFE0;
+    color: #fff;
+  }
+
+  .el-form {
+    overflow: hidden;
+  }
+
+  .el-form-item__error {
+    left: 55px;
+  }
+
+  .el-form-item {
+    margin-bottom: 30px;
+  }
+
+  .el-form-item__label {
+    width: 54px;
+    color: #333;
+    font-size: 14px;
+  }
+}
+
+.displayModule {
+  flex: 1;
+  width: 445px;
+  height: 160px;
+  margin-right: 20px;
+  padding: 37px 0 37px 60px;
+  text-align: center;
+
+  .logo_div {
+    float: left;
+    text-align: center;
+    margin-right: 60px;
+
+    img {
+      margin-bottom: 10px;
+    }
+  }
+
+  .module_info {
+    padding: 11px 0;
+    float: left;
+    text-align: left;
+
+    .firstP {
+      margin-bottom: 28px;
+    }
+
+    .currency {
+      margin-right: 10px;
+    }
+  }
+
+  title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .value {
+    font-size: 20px;
+    color: #2DAFE0;
+    margin-bottom: 10px;
+  }
+
+  .currency {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+}
+
+.wordColor {
+  color: #2DAFE0;
+}
+
+.introduce-table {
+  .el-table .cell {
+    font-size: 12px;
+  }
+
+  th {
+    text-align: center;
+
+    .cell {
+      font-size: 14px !important;
+      font-weight: 600;
+    }
+  }
+
+  .el-table .el-table__body-wrapper tr td {
+    padding: 5px 0;
+  }
+
+  .el-table__row td:nth-child(1) .cell {
+    font-weight: 600 !important;
+    text-align: center;
+  }
+}
