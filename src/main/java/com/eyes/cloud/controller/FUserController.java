@@ -9,6 +9,7 @@ import com.eyes.cloud.interceptor.UserLoginToken;
 import com.eyes.cloud.service.IFUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class FUserController {
      */
     @PostMapping("/register")
     @UserLoginToken(required = false)
-    Result register(UserInDto inDto){
+    Result register(@RequestBody UserInDto inDto){
         return userService.register(inDto);
     }
 
@@ -47,7 +48,7 @@ public class FUserController {
      */
     @PostMapping("/login")
     @UserLoginToken(required = false)
-    Result login(UserInDto inDto){
+    Result login(@RequestBody UserInDto inDto){
         return userService.login(inDto);
     }
 

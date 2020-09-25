@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("com.eyes.cloud.mapper")
 @AutoConfigureAfter(MybatisPlusAutoConfiguration.class)
-@ServletComponentScan("com.eyes.cloud.filter")
+//@ServletComponentScan("com.eyes.cloud.filter")
 @EnableTransactionManagement
 @EnableScheduling
 public class CloudApplication {
