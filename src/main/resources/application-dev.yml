@@ -5,10 +5,6 @@ spring:
     url: jdbc:mysql://39.96.18.59:3306/eyes?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: root
     password: jdaiwe83434
-#    #    运行环境
-#    url: jdbc:mysql://rm-j6cf5dv78t61gkwy2zo.mysql.rds.aliyuncs.com:3306/official?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-#    username: ypool
-#    password: huang!@#181
   redis:
     host: 39.96.18.59
     port: 6379
