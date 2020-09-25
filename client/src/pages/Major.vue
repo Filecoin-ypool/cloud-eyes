@@ -4,6 +4,7 @@
         <div class="major-wrapper">
             <eyes-left/>
             <div class="content">
+                <video-play/>
                 <video-list/>
             </div>
         </div>
@@ -14,13 +15,15 @@
     import EyesHeader from "../components/EyesHeader"
     import EyesLeft from "../components/EyesLeft"
     import VideoList from "../components/VideoList"
+    import VideoPlay from "../components/VideoPlay"
 
     export default {
         name: "Major",
         components: {
             EyesHeader,
             EyesLeft,
-            VideoList
+            VideoList,
+            VideoPlay
         }
     }
 </script>
