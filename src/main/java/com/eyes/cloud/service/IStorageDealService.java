@@ -3,6 +3,9 @@ package com.eyes.cloud.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eyes.cloud.common.dto.Result;
 import com.eyes.cloud.entity.StorageDeal;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <p>
@@ -35,4 +38,11 @@ public interface IStorageDealService extends IService<StorageDeal> {
      * @return
      */
     Result getById(Integer uid,String id);
+
+    /**
+     * 上传文件
+     * @param file
+     * @return
+     */
+    Result upload(MultipartFile file,Integer uid) throws IOException;
 }
