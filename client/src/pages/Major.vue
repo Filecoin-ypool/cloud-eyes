@@ -2,10 +2,10 @@
     <div>
         <eyes-header/>
         <div class="major-wrapper">
-            <eyes-left/>
+            <eyes-left @event1="getList($event)"/>
             <div class="content">
                 <video-play/>
-                <video-list/>
+                <video-list :list="list"/>
             </div>
         </div>
     </div>
@@ -24,6 +24,17 @@
             EyesLeft,
             VideoList,
             VideoPlay
+        },
+        data() {
+            return {
+                list: []
+            }
+        },
+        methods: {
+            getList(data) {
+                console.log("data", data)
+                this.list = data
+            }
         }
     }
 </script>

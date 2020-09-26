@@ -4,7 +4,7 @@
         <div class="item-wrapper">
             <span :class="ins==index?'item-active':''"
                   v-for="(item,index) in list"
-                  :key="index" @click="changeDate(index,item)">{{item.name}}</span>
+                  :key="index" @click="changeDate(index,item)">{{item.day}}</span>
         </div>
     </div>
 </template>
@@ -15,23 +15,24 @@
         data() {
             return {
                 ins: 0,
-                list: [
-                    {
-                        name: "2020/10/01"
-                    }, {
-                        name: "2020/09/30"
-                    }, {
-                        name: "2020/09/30"
-                    }, {
-                        name: "2020/09/30"
-                    }
-                ]
+                list: []
             }
         },
+        mounted() {
+            this.getList()
+        },
         methods: {
-            changeDate(index, item) {
+            //获取列表
+            async getList() {
+                let data = await this.$api.getDayList()
+                this.list = data
+                this.changeDate(0,data[0])
+            },
+            async changeDate(index, item) {
                 this.ins = index
-                console.log(item.name)
+                let data = await this.$api.getListByDay(item.day)
+                console.log("child", data)
+                this.$emit('event1', data)
             }
         }
     }
