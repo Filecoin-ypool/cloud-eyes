@@ -63,7 +63,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (verifyToken) {
             String token = request.getHeader("token");
             if (StringUtils.isEmpty(token)) {
-                throw new BusinessException(ResCodeEnum.TOKEN_ERROR);
+//                throw new BusinessException(ResCodeEnum.TOKEN_ERROR);
+                request.setAttribute(Common.USER_ID, 0);
+                Common.threadLocal.set(0);
             }
             String pattern = CacheKey.getWebLoginTokenKeyPatternByToken(token);
             Set<String> keys = redisTemplate.keys(pattern);
