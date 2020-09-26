@@ -33,20 +33,24 @@ steps:
   - name: deploy
     image: appleboy/drone-ssh
     settings:
-      host: 118.190.88.226
-      port: 22
-      user: root
-      password: Wlp71512121
+#      host: 118.190.88.226
+      host: 171.214.13.227
+#      port: 22
+      port: 20811
+#      user: root
+      user: cat
+#      password: Wlp71512121
+      password: pxrxingrui110
       script:
-        - docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/rsa
-        - echo "login docker"
-        - echo "login success, pulling...+++"
-        - docker pull registry.cn-hangzhou.aliyuncs.com/ypool/rsa
-        - echo "image running"
-        - docker stop ypool-eyes
-        - docker rm ypool-eyes
-        - docker run --name ypool-eyes -v /var/video:/var/video -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
-        - echo "run success"
+        - sudo docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - sudo echo "login docker"
+        - sudo echo "login success, pulling...+++"
+        - sudo docker pull registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - sudo echo "image running"
+        - sudo docker stop ypool-eyes
+        - sudo docker rm ypool-eyes
+        - sudo docker run --name ypool-eyes -v /var/video:/var/video -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - sudo echo "run success"
     when:
       branch: master
       event: [ push ]

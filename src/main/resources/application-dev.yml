@@ -20,6 +20,9 @@ logging:
     org.ypool.mine.pool.dao.mapper: debug
 race:
   miner: t01800
+  wallet: t3wvtsyixfds5lk4xitabem7q7g6xrlmismowszikc7s6g25oiurflh2qyh57gbdpaqjsre4ttu5pi4qqrk33q
+  url: http://171.214.13.227:1234/rpc/v0
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.xr_spMgaANTtevX2ChlDws6pYuIaih8kjejGQHfmBBU
 server:
   port: 8001
 http_pool:

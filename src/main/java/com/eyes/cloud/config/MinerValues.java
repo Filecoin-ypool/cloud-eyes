@@ -1,6 +1,6 @@
 package com.eyes.cloud.config;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/7/14
  * @since 1.0
  */
-@Getter
+@Data
 @Component
 public class MinerValues {
 
@@ -19,4 +19,12 @@ public class MinerValues {
     @Value("${race.miner}")
     private String miner;
 
+    @Value("${race.url}")
+    private String url;
+
+    @Value("${race.wallet}")
+    private String wallet;
+
+    @Value("${race.token}")
+    private String token;
 }
