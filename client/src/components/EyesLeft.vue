@@ -2,9 +2,10 @@
     <div class="eyes-left">
         <span class="sort">Sort</span>
         <div class="item-wrapper">
+            <span v-if="this.list.length<1">暂无数据</span>
             <span :class="ins==index?'item-active':''"
-                  v-for="(item,index) in list"
-                  :key="index" @click="changeDate(index,item)">{{item.name}}</span>
+                  v-for="(item,index) in list" v-else
+                  :key="index" @click="changeDate(index,item)">{{item.day}}</span>
         </div>
     </div>
 </template>
@@ -15,23 +16,25 @@
         data() {
             return {
                 ins: 0,
-                list: [
-                    {
-                        name: "2020/10/01"
-                    }, {
-                        name: "2020/09/30"
-                    }, {
-                        name: "2020/09/30"
-                    }, {
-                        name: "2020/09/30"
-                    }
-                ]
+                list: []
             }
         },
+        mounted() {
+            this.getList()
+        },
         methods: {
-            changeDate(index, item) {
+            //获取列表
+            async getList() {
+                let data = await this.$api.getDayList()
+                this.list = data
+                if (this.list != null && this.list.length > 0)
+                    this.changeDate(0, data[0])
+            },
+            async changeDate(index, item) {
                 this.ins = index
-                console.log(item.name)
+                let data = await this.$api.getListByDay(item.day)
+                console.log("child", data)
+                this.$emit('event1', data)
             }
         }
     }
