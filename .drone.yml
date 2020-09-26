@@ -43,6 +43,7 @@ steps:
       password: pxrxingrui110
       script:
         - sudo docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - pxrxingrui110
         - sudo echo "login docker"
         - sudo echo "login success, pulling...+++"
         - sudo docker pull registry.cn-hangzhou.aliyuncs.com/ypool/rsa
