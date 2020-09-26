@@ -10,6 +10,10 @@ spring:
     port: 6379
     password: huzhiyuredis567
     database: 8
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 # 打印sql
 logging:
   level:

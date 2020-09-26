@@ -7,12 +7,11 @@ import com.eyes.cloud.interceptor.Common;
 import com.eyes.cloud.interceptor.UserLoginToken;
 import com.eyes.cloud.service.IStorageDealService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * <p>
@@ -67,5 +66,9 @@ public class StorageDealController {
         return storageDealService.getById(uid, id);
     }
 
-
+    @PostMapping("/upload")
+    Result upload(HttpServletRequest request,@RequestParam("file") MultipartFile file) throws IOException {
+        int uid = (int) request.getAttribute(Common.USER_ID);
+        return storageDealService.upload(file,uid);
+    }
 }

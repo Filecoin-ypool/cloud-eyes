@@ -18,6 +18,7 @@ import com.eyes.cloud.util.ShareCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -46,6 +47,7 @@ public class FUserServiceImpl extends ServiceImpl<FUserMapper, FUser> implements
      * @return
      */
     @Override
+    @Transactional
     public Result register(UserInDto inDto) {
         //验证码 todo
         LambdaQueryWrapper<FUser> lambdaQueryWrapper = Wrappers.<FUser>lambdaQuery().eq(FUser::getPhone, inDto.getPhone());
