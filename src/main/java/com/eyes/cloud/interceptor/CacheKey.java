@@ -44,8 +44,8 @@ public class CacheKey {
     /**
      * web登录token的key
      */
-    public static String getWebLoginTokenKey(String token, long phone) {
-        return "web_login_" + phone + "_" + token;
+    public static String getWebLoginTokenKey(String token, String username) {
+        return "web_login_" + username + "_" + token;
     }
 
     /**
@@ -60,6 +60,13 @@ public class CacheKey {
      */
     public static String getWebLoginTokenKeyPatternByPhone(long phone) {
         return "web_login_" + phone + "_*";
+    }
+
+    /**
+     * web登录token格式
+     */
+    public static String getWebLoginTokenKeyPatternByUsername(String username) {
+        return "web_login_" + username + "_*";
     }
 
     /**
