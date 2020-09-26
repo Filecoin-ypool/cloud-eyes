@@ -102,7 +102,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         //服务器存储路径
         String filePath = "/var/video/" + nowDay + "/";
         //保存文件
-//        saveFile(file, filePath);
+        saveFile(file, filePath);
         //import文件
         String fileAllPath = filePath + file.getOriginalFilename();
         String url = minerValues.getUrl();
