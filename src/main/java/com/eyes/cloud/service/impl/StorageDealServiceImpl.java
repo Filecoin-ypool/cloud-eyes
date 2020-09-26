@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +105,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         LocalDate nowDay = LocalDate.now();
         //服务器存储路径
         String filePath = "/var/video/" + nowDay + "/";
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getOriginalFilename() + "_" + uid + "_" + LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
 
         //存储配置信息
         String url = minerValues.getUrl();
@@ -113,7 +114,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         String wallet = minerValues.getWallet();
 
         //保存文件
-        saveFile(file, filePath);
+        saveFile(file, filePath + fileName);
 
         //import文件
         String cid = importFile(fileName, filePath, url, token);
@@ -276,20 +277,19 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
      * 保存文件
      *
      * @param file
-     * @param filePath
+     * @param fileAllName
      */
-    private void saveFile(MultipartFile file, String filePath) {
+    private void saveFile(MultipartFile file, String fileAllName) {
         if (file.isEmpty()) {
             throw new BusinessException("文件流获取异常!");
         }
         String fileName = file.getOriginalFilename();
-        File dest = new File(filePath + fileName);
+        File dest = new File(fileAllName);
         if (!dest.getParentFile().exists()) {
             boolean mkdir = dest.getParentFile().mkdir();
             if (!mkdir) {
                 System.out.println("+++++++++++++++++++++++++++++++++++++++");
-                System.out.println(dest.getName());
-                System.out.println(filePath);
+                System.out.println(fileAllName);
                 System.out.println("+++++++++++++++++++++++++++++++++++++++");
                 throw new BusinessException("文件夹创建失败!");
             }
