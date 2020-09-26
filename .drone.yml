@@ -10,7 +10,7 @@ steps:
       - name: maven_cache #使用存储卷的名称
         path: /root/.m2 #容器的路径，这里面有配置和本地仓库
     commands: #执行命令
-      - mvn clean package -DskipTests
+      - mvn clean package -DskipTests -X
     when: #这个步骤的执行条件1
       branch: master  #只有master分支会执行这个步骤
       event: [ push ] #通过push事件触发执行
