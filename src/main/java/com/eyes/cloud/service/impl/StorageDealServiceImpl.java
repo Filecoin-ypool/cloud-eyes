@@ -104,6 +104,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
             if (!mkdir) {
                 System.out.println("+++++++++++++++++++++++++++++++++++++++");
                 System.out.println(dest.getName());
+                System.out.println(filePath);
                 System.out.println("+++++++++++++++++++++++++++++++++++++++");
                 throw new BusinessException("文件夹创建失败!");
             }
