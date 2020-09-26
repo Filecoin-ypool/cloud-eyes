@@ -49,7 +49,6 @@
 
 <style scoped>
     .video-list {
-        /*margin: 82px 120px;*/
         margin: 50px 120px;
         display: flex;
         flex-wrap: wrap;
@@ -65,6 +64,10 @@
         font-size: 16px;
         margin-right: 20px;
         margin-bottom: 20px;
+    }
+
+    .video-list > div:hover {
+        cursor: pointer;
     }
 
     .video-name {

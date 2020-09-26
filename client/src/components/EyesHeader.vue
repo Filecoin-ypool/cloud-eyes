@@ -10,7 +10,7 @@
                     </Button>
                 </Upload>
                 <span class="item" @click="signIn">Sign in</span>
-                <span class="item">Sign up</span>
+                <span class="item" @click="signUp">Sign up</span>
             </div>
         </div>
         <login-form :modal="modal" :modify="modify"/>
@@ -36,7 +36,16 @@
             LoginForm
         },
         methods: {
+            //登录
             signIn() {
+                this.modal = true
+                let modify = {
+                    title: "Sign up"
+                }
+                this.modify = modify
+            },
+            //注册
+            signUp() {
                 this.modal = true
             },
             async getAddress() {
