@@ -2,8 +2,9 @@
     <div class="eyes-left">
         <span class="sort">Sort</span>
         <div class="item-wrapper">
+            <span v-if="this.list.length<1">暂无数据</span>
             <span :class="ins==index?'item-active':''"
-                  v-for="(item,index) in list"
+                  v-for="(item,index) in list" v-else
                   :key="index" @click="changeDate(index,item)">{{item.day}}</span>
         </div>
     </div>
@@ -26,7 +27,8 @@
             async getList() {
                 let data = await this.$api.getDayList()
                 this.list = data
-                this.changeDate(0,data[0])
+                if (this.list != null && this.list.length > 0)
+                    this.changeDate(0, data[0])
             },
             async changeDate(index, item) {
                 this.ins = index

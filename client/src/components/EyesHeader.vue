@@ -40,13 +40,21 @@
             signIn() {
                 this.modal = true
                 let modify = {
-                    title: "Sign up"
+                    password: '',
+                    title: "Sign in",
+                    type: 0  //登录
                 }
                 this.modify = modify
             },
             //注册
             signUp() {
                 this.modal = true
+                let modify = {
+                    password: '',
+                    title: "Sign up",
+                    type: 1  //注册
+                }
+                this.modify = modify
             },
             async getAddress() {
                 const nodeClient = getClient();
