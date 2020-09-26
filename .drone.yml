@@ -45,7 +45,7 @@ steps:
         - echo "image running"
         - docker stop ypool-eyes
         - docker rm ypool-eyes
-        - docker run --name ypool-eyes -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - docker run --name ypool-eyes -v /var/video:/var/video -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
         - echo "run success"
     when:
       branch: master

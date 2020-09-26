@@ -82,7 +82,8 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
     @Transactional
     public Result upload(MultipartFile file, Integer uid) throws IOException {
         LocalDate nowDay = LocalDate.now();
-        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "static";
+//        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "static";
+        String path = "/var";
         String filePath = path + "/video/" + nowDay + "/";
         //保存文件
         saveFile(file, filePath);
