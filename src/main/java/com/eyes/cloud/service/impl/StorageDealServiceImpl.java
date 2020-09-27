@@ -410,8 +410,11 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
                         HttpUtil.generatePostJson(jsonMap, token),
                         String.class
                 );
-
-        return apiResponse.getBody();
+        String body = apiResponse.getBody();
+        System.out.println("+++++++++++++++++++++++");
+        System.out.println(body);
+        System.out.println("+++++++++++++++++++++++");
+        return body;
     }
 
     /**
