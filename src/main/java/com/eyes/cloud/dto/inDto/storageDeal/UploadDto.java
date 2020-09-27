@@ -13,5 +13,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class UploadDto {
     MultipartFile file;
-    private String miner;
+    private String miner="t01800";
 }
