@@ -17,5 +17,8 @@ api.signIn = p => post("/api/f_user/login", p)
 //注册
 api.signUp = p => post('/api/f_user/register', p)
 
+//获取用户名
+api.getUsername = () => get("/api/f_user/get_user_name", null)
+
 export default api;
 

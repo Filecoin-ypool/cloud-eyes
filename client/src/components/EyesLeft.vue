@@ -33,7 +33,6 @@
             async changeDate(index, item) {
                 this.ins = index
                 let data = await this.$api.getListByDay(item.day)
-                console.log("child", data)
                 this.$emit('event1', data)
             }
         }

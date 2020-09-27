@@ -5,35 +5,45 @@
                 <img src="../assets/logo.png" alt="">
             </div>
             <div>
-                <Upload action="//jsonplaceholder.typicode.com/posts/" class="upload">
-                    <Button icon="ios-cloud-upload-outline" type="primary" size="large">Upload Surveillance Video
-                    </Button>
-                </Upload>
-                <span class="item" @click="signIn">Sign in</span>
-                <span class="item" @click="signUp">Sign up</span>
+                <!--<Upload action="//jsonplaceholder.typicode.com/posts/" class="upload">-->
+                <!--<Button icon="ios-cloud-upload-outline" type="primary" size="large">Upload Surveillance Video-->
+                <!--</Button>-->
+                <!--</Upload>-->
+                <Button icon="ios-cloud-upload-outline"
+                        type="primary" size="large" @click="upload">
+                    Upload Surveillance Video
+                </Button>
+                <span class="item" @click="signIn" v-if="username==''">Sign in</span>
+                <span class="item" @click="signUp" v-if="username==''">Sign up</span>
+                <span class="item" v-if="username!=''">{{username}}</span>
+                <span class="item" @click="signOut" v-if="username!=''">sign out</span>
             </div>
         </div>
         <login-form :modal="modal" :modify="modify"/>
+        <video-upload :modal="uploadModal"/>
     </div>
 </template>
 
 <script>
-    import {getClient} from "../utils/lotus";
     import LoginForm from '../components/LoginForm'
+    import VideoUpload from '../components/VideoUpload'
 
     export default {
         name: "EyesHeader",
         mounted() {
-            // this.getAddress()
+            this.getUsername()
         },
         data() {
             return {
                 modal: false,
-                modify: {}
+                modify: {},
+                username: '',
+                uploadModal: false
             }
         },
         components: {
-            LoginForm
+            LoginForm,
+            VideoUpload
         },
         methods: {
             //登录
@@ -56,13 +66,28 @@
                 }
                 this.modify = modify
             },
-            async getAddress() {
-                const nodeClient = getClient();
-                const defaultWalletAddress = await nodeClient.walletDefaultAddress();
-                console.log("address", defaultWalletAddress)
+            getUsername() {
+                const token = localStorage.getItem("token")
+                if (token != 'undefined' && token != null) {
+                    this.username = localStorage.getItem("username")
+                } else {
+                    this.username = ''
+                }
+            },
+            //上传
+            upload() {
+                this.uploadModal = true
+            },
+            //退出
+            signOut() {
+                localStorage.clear()
+                this.getUsername()
             },
             cancel() {
                 this.modal = false
+            },
+            uploadCancel() {
+                this.uploadModal = false
             }
         }
     }

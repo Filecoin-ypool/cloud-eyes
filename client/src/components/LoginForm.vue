@@ -72,7 +72,10 @@
             async login(form) {
                 let token = await this.$api.signIn(form)
                 localStorage.setItem("token", token);
+                let username = await this.$api.getUsername()
+                localStorage.setItem("username", username);
                 this.$parent.cancel();
+                this.$parent.getUsername()
             }
         }
     }
