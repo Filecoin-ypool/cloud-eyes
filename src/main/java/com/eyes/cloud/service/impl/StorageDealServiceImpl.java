@@ -227,7 +227,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         JSONObject body = JSONObject.parseObject(bodyStr);
         JSONArray result = (JSONArray) body.get("result");
         List<StorageDealByFind> deals = result.toJavaList(StorageDealByFind.class);
-        System.out.println(deals);
+//        System.out.println(deals);
 
         Map<String, StorageDealByFind> dealMap = getDealMap(deals);
 
