@@ -1,0 +1,119 @@
+kind: pipeline
+name: ac
+steps:
+  ############################################################################################################################
+  ############################################################################################################################
+  - name: MavenBuild #第一步：maven编译1
+    #    privileged: true
+    image: maven:3.6.3-jdk-8 #使用maven3.6.3+JDK8环境，这是官方镜像
+    volumes: #定义存储卷，不同于我们的Ceph这里的存储卷是主机路径
+      - name: maven_cache #使用存储卷的名称
+        path: /root/.m2 #容器的路径，这里面有配置和本地仓库
+    commands: #执行命令
+      - mvn clean package -DskipTests -X
+    when: #这个步骤的执行条件1
+      branch: master  #只有master分支会执行这个步骤
+      event: [ push ] #通过push事件触发执行
+  ############################################################################################################################
+  - name: DockerBuild #第三部：打包docker
+    image: plugins/docker #这是Drone官方提供的Docker插件镜像，其实完全可以用官方镜像
+    settings:
+      username: 从不卖萌好ac
+      password: q1a2z3qq.
+      repo: registry.cn-hangzhou.aliyuncs.com/ypool/rsa #镜像地址
+      registry: registry.cn-hangzhou.aliyuncs.com #仓库地址
+      tags:
+        - ${DRONE_BUILD_NUMBER} #tags，这里是Drone的一个变量，也可以使用其他
+        - latest
+    when:
+      branch: master
+      event: [ push ]
+  ############################################################################################################################
+  ############################################################################################################################
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+#      host: 118.190.88.226
+      host: 171.214.13.227
+#      port: 22
+      port: 20811
+#      user: root
+      user: cat
+#      password: Wlp71512121
+      password: pxrxingrui110
+      script:
+        - sudo docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - pxrxingrui110
+        - sudo echo "login docker"
+        - sudo echo "login success, pulling...+++"
+        - sudo docker pull registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - sudo echo "image running"
+        - sudo docker stop ypool-eyes
+        - sudo docker rm ypool-eyes
+        - sudo docker run --name ypool-eyes -v /var/video:/var/video -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - sudo echo "run success"
+    when:
+      branch: master
+      event: [ push ]
+  ############################################################################################################################
+  #  - -------------------------------------------------------------------------------------------------------------------------
+  #  - -------------------------------------------------------------------------------------------------------------------------
+  #  - -------------------------------------------------------------------------------------------------------------------------
+  #  - -------------------------------------------------------------------------------------------------------------------------
+  ############################################################################################################################
+  - name: MavenBuild_Test #第一步：maven编译1
+    #    privileged: true
+    image: maven:3.6.3-jdk-8 #使用maven3.6.3+JDK8环境，这是官方镜像
+    volumes: #定义存储卷，不同于我们的Ceph这里的存储卷是主机路径
+      - name: maven_cache #使用存储卷的名称
+        path: /root/.m2 #容器的路径，这里面有配置和本地仓库
+    commands: #执行命令
+      - mvn clean package -DskipTests
+    when: #这个步骤的执行条件1
+      branch: dev  #只有master分支会执行这个步骤
+      event: [ push ] #通过push事件触发执行
+  ############################################################################################################################
+  - name: DockerBuild_Test #第三部：打包docker
+    image: plugins/docker #这是Drone官方提供的Docker插件镜像，其实完全可以用官方镜像
+    settings:
+      username: 从不卖萌好ac
+      password: q1a2z3qq.
+      repo: registry.cn-hangzhou.aliyuncs.com/ypool/rsa #镜像地址
+      registry: registry.cn-hangzhou.aliyuncs.com #仓库地址
+      tags:
+        - ${DRONE_BUILD_NUMBER} #tags，这里是Drone的一个变量，也可以使用其他
+        - latest
+    when:
+      branch: dev
+      event: [ push ]
+  ############################################################################################################################
+  ############################################################################################################################
+  - name: deployTest
+    image: appleboy/drone-ssh
+    settings:
+      host: 118.190.88.226
+      port: 22
+      user: root
+      password: Wlp71512121
+      script:
+        - docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - echo "login docker"
+        - echo "login success, pulling...+++"
+        - docker pull registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - echo "image running"
+        - docker stop ypool-eyes
+        - docker rm ypool-eyes
+        - docker run --name ypool-eyes -p 8033:8001 -p 8034:4000 -d registry.cn-hangzhou.aliyuncs.com/ypool/rsa
+        - echo "run success"
+    when:
+      branch: dev
+      event: [ push ]
+  ############################################################################################################################
+
+volumes: #这里是存储卷定义
+  - name: maven_cache
+    host:
+      path: /var/lib/cache #定义一个主机路径来存储数据
+  - name: yarn_cache
+    host:
+      path: /var/lib/cache/yarn/v4

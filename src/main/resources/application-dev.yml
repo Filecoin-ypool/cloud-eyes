@@ -20,12 +20,16 @@ logging:
     org.ypool.mine.pool.dao.mapper: debug
 race:
   miner: t01800
+  client: t2o3zsvymlf6ckptanyfpmmu37tnw6te7fwwnanwa
+  wallet: t3wvtsyixfds5lk4xitabem7q7g6xrlmismowszikc7s6g25oiurflh2qyh57gbdpaqjsre4ttu5pi4qqrk33q
+  url: http://171.214.13.227:1234/rpc/v0
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.xr_spMgaANTtevX2ChlDws6pYuIaih8kjejGQHfmBBU
 server:
   port: 8001
 http_pool:
   max_total: 200
   default_max_per_route: 100
-  connect_timeout: 5000
-  connection_request_timeout: 1000
-  socket_timeout: 65000
+  connect_timeout: 6000000
+  connection_request_timeout: 6000000
+  socket_timeout: 6000000
   validate_after_inactivity: 2000

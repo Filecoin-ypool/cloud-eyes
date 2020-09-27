@@ -27,7 +27,7 @@ public class StorageDeal implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.UUID)
-    private Integer id;
+    private String id;
 
     /**
      * 用户id
@@ -43,6 +43,11 @@ public class StorageDeal implements Serializable {
      * 发起交易返回的cid
      */
     private String dealCid;
+
+    /**
+     * 查询和检索时需要使用的id
+     */
+    private String pieceCid;
 
     /**
      * 交易id
@@ -105,4 +110,8 @@ public class StorageDeal implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
+    /**
+     * 错误信息
+     */
+    private String message;
 }

@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -27,6 +26,11 @@ public class FUser implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    /**
+     * 用户名
+     */
+    private String username;
 
     /**
      * 手机号
@@ -52,41 +56,5 @@ public class FUser implements Serializable {
      * 创建时间
      */
     private LocalDateTime createAt;
-
-    /**
-     * 左节点
-     */
-    private Integer lft;
-
-    /**
-     * 右节点
-     */
-    private Integer rgt;
-
-    /**
-     * 等级
-     */
-    private Integer level;
-
-    /**
-     * 邀请码
-     */
-    private String invite;
-
-    /**
-     * 升级到生态节点前的父节点
-     */
-    private Integer promotion;
-
-    /**
-     * 层级
-     */
-    private Integer layer;
-
-    /**
-     * 托管收益比例
-     */
-    private BigDecimal depositRatio;
-
 
 }

@@ -3,6 +3,7 @@ package com.eyes.cloud.controller;
 
 import com.eyes.cloud.common.dto.Result;
 import com.eyes.cloud.config.CommonValue;
+import com.eyes.cloud.dto.inDto.storageDeal.UploadDto;
 import com.eyes.cloud.interceptor.Common;
 import com.eyes.cloud.interceptor.UserLoginToken;
 import com.eyes.cloud.service.IStorageDealService;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * <p>
@@ -66,9 +68,51 @@ public class StorageDealController {
         return storageDealService.getById(uid, id);
     }
 
-    @PostMapping("/upload")
-    Result upload(HttpServletRequest request,@RequestParam("file") MultipartFile file) throws IOException {
+    /**
+     * 根据id获取文件
+     *
+     * @param request
+     * @param id
+     * @return
+     */
+    @GetMapping("/get_file")
+    Result getFileById(HttpServletResponse response, HttpServletRequest request, @RequestParam String id) throws IOException {
         int uid = (int) request.getAttribute(Common.USER_ID);
-        return storageDealService.upload(file,uid);
+        String filePath = storageDealService.getFileById(uid, id);
+
+        response.setHeader("Content-Disposition", "attachment;filename=" + "sss" + ".xml");
+        // 响应类型,编码
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        // 形成输出流
+        OutputStream osOut = response.getOutputStream();
+        File file = new File(filePath);
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+            byte[] buf = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = input.read(buf)) > 0) {
+                osOut.write(buf, 0, bytesRead);
+            }
+        } finally {
+            assert input != null;
+            input.close();
+            osOut.close();
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 文件上传至fil
+     *
+     * @param request
+     * @param dto
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/upload")
+    Result upload(HttpServletRequest request, UploadDto dto) throws IOException {
+        int uid = (int) request.getAttribute(Common.USER_ID);
+        return storageDealService.upload(dto, uid);
     }
 }
