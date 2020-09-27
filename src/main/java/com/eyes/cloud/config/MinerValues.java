@@ -27,4 +27,7 @@ public class MinerValues {
 
     @Value("${race.token}")
     private String token;
+
+    @Value("${race.client}")
+    private String client;
 }

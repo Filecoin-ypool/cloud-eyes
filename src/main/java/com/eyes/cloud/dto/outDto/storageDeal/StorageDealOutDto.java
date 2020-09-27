@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class StorageDealOutDto {
-    private Integer id;
+    private String id;
 
     /**
      * import返回的cid

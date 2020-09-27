@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.eyes.cloud.common.dto.Result;
 import com.eyes.cloud.config.MinerValues;
-import com.eyes.cloud.dto.outDto.storageDeal.StorageDealDayList;
-import com.eyes.cloud.dto.outDto.storageDeal.StorageDealOutDto;
+import com.eyes.cloud.dto.inDto.storageDeal.UploadDto;
+import com.eyes.cloud.dto.outDto.storageDeal.*;
 import com.eyes.cloud.entity.Local;
 import com.eyes.cloud.entity.StorageDeal;
 import com.eyes.cloud.exception.BusinessException;
@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -94,23 +95,203 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
     }
 
     /**
+     * 根据id获取文件
+     *
+     * @param uid
+     * @param id
+     * @return
+     */
+    @Override
+    public String getFileById(Integer uid, String id) {
+        LambdaQueryWrapper<StorageDeal> lambdaQueryWrapper = Wrappers.<StorageDeal>lambdaQuery().eq(StorageDeal::getUserId, uid).eq(StorageDeal::getId, id);
+        StorageDeal storageDeal = getOne(lambdaQueryWrapper);
+        if (storageDeal == null) {
+            throw new BusinessException("当前用户无权没有此文件查看权限!");
+        }
+        String miner = storageDeal.getMiner();
+        String cid = storageDeal.getCid();
+        String pieceCid = storageDeal.getPieceCid();
+        //存储配置信息
+        String url = minerValues.getUrl();
+        String token = minerValues.getToken();
+        String wallet = minerValues.getWallet();
+
+        //进行检索订单请求
+        StorageOrder storageOrder = getStorageOrder(miner, cid, pieceCid, url, token);
+        MinerPeer minerPeer = storageOrder.getMinerPeer();
+        if (minerPeer.getPieceCid() != null && minerPeer.getPieceCid().length() < 10) {
+            System.out.println(storageOrder.getError());
+            throw new BusinessException("检索订单错误!");
+        }
+        System.out.println("订单查询成功!");
+        //进行检索请求
+        String filePath = "/var/video/temp/" + storageDeal.getId() + "_" + LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        boolean isCar = false;
+        retrieve(cid, pieceCid, url, token, wallet, storageOrder, minerPeer, filePath, isCar);
+        System.out.println("订单检索成功!");
+
+        return filePath;
+    }
+
+    private void retrieve(String cid, String pieceCid, String url, String token, String wallet, StorageOrder storageOrder, MinerPeer minerPeer, String filePath, boolean isCar) {
+        Map<String, Object> jsonMap = new HashMap<>(6);
+        jsonMap.put("id", 1);
+        jsonMap.put("jsonrpc", "2.0");
+        jsonMap.put("method", "Filecoin.ClientRetrieve");
+        JSONArray jsonArray = new JSONArray();
+        String orderStr = "{\n" +
+                "                    \"Root\": {\n" +
+                "                        \"/\": \"" + cid + "\"\n" +
+                "                    },\n" +
+                "                    \"Piece\": {\n" +
+                "                        \"/\": \"" + pieceCid + "\"\n" +
+                "                    },\n" +
+                "                    \"Size\": " + storageOrder.getSize() + ",\n" +
+                "                    \"Total\": \"" + storageOrder.getMinPrice() + "\",\n" +
+                "                    \"UnsealPrice\": \"" + storageOrder.getUnsealPrice() + "\",\n" +
+                "                    \"PaymentInterval\": " + storageOrder.getPaymentInterval() + ",\n" +
+                "                    \"PaymentIntervalIncrease\": " + storageOrder.getPaymentIntervalIncrease() + ",\n" +
+                "                    \"Client\": \"" + wallet + "\",\n" +
+                "                    \"Miner\": \"" + storageOrder.getMiner() + "\",\n" +
+                "                    \"MinerPeer\": {\n" +
+                "                        \"Address\": \"" + minerPeer.getAddress() + "\",\n" +
+                "                        \"ID\": \"" + minerPeer.getId() + "\",\n" +
+                "                        \"PieceCID\": {\n" +
+                "                            \"/\": \"" + pieceCid + "\"\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                }";
+        JSONObject orderObj = JSONObject.parseObject(orderStr);
+
+        String fileRefStr = "      {\n" +
+                "                    \"Path\": \"" + filePath + "\",\n" +
+                "                    \"IsCAR\": " + isCar + "\n" +
+                "                   }";
+        JSONObject fileRefObj = JSONObject.parseObject(fileRefStr);
+        jsonArray.add(orderObj);
+        jsonArray.add(fileRefObj);
+        jsonMap.put("params", jsonArray);
+        //发起http请求
+        String bodyStr = sendHttpRequest(url, token, jsonMap);
+        //获取json对象
+        JSONObject body = JSONObject.parseObject(bodyStr);
+        if (body.get("error") != null) {
+            System.out.println(body.get("error"));
+            throw new BusinessException("检索交易执行失败!");
+        }
+    }
+
+    private StorageOrder getStorageOrder(String miner, String cid, String pieceCid, String url, String token) {
+        Map<String, Object> jsonMap = new HashMap<>(6);
+        jsonMap.put("id", 1);
+        jsonMap.put("jsonrpc", "2.0");
+        jsonMap.put("method", "Filecoin.ClientMinerQueryOffer");
+        JSONArray jsonArray = new JSONArray();
+        JSONObject cidObj = new JSONObject();
+        cidObj.put("/", cid);
+        JSONObject pieceCidObj = new JSONObject();
+        pieceCidObj.put("/", pieceCid);
+        jsonArray.add(miner);
+        jsonArray.add(cidObj);
+        jsonArray.add(pieceCidObj);
+        jsonMap.put("params", jsonArray);
+
+        //发起http请求
+        String bodyStr = sendHttpRequest(url, token, jsonMap);
+        //获取json对象
+        JSONObject body = JSONObject.parseObject(bodyStr);
+        JSONObject result = (JSONObject) body.get("result");
+        return result.toJavaObject(StorageOrder.class);
+    }
+
+    /**
+     * 开始执行交易表状态刷新任务
+     */
+    @Override
+    @Transactional()
+    public void refreshDealsList() {
+        //存储配置信息
+        String url = minerValues.getUrl();
+        String token = minerValues.getToken();
+
+        Map<String, Object> jsonMap = new HashMap<>(6);
+        jsonMap.put("id", 1);
+        jsonMap.put("jsonrpc", "2.0");
+        jsonMap.put("method", "Filecoin.ClientListDeals");
+        JSONArray jsonArray = new JSONArray();
+        jsonMap.put("params", jsonArray);
+
+        //发起http请求
+        String bodyStr = sendHttpRequest(url, token, jsonMap);
+        //获取json对象
+        JSONObject body = JSONObject.parseObject(bodyStr);
+        JSONArray result = (JSONArray) body.get("result");
+        List<StorageDealByFind> deals = result.toJavaList(StorageDealByFind.class);
+        System.out.println(deals);
+
+        Map<String, StorageDealByFind> dealMap = getDealMap(deals);
+
+        List<StorageDeal> storageDealList = list();
+        List<StorageDeal> collect = storageDealList.stream().peek(storageDeal -> {
+            StorageDealByFind dealByFind = dealMap.get(storageDeal.getDealCid());
+            if (dealByFind != null) {
+                storageDeal.setPieceCid(dealByFind.getPieceCid());
+                storageDeal.setDealId(dealByFind.getDealId());
+                storageDeal.setMessage(dealByFind.getMessage());
+                storageDeal.setStatus(dealByFind.getState());
+            }
+        }).collect(Collectors.toList());
+
+        boolean b = saveOrUpdateBatch(collect);
+        if (!b) {
+            throw new BusinessException("交易信息更新保存操作失败!");
+        }
+    }
+
+    private Map<String, StorageDealByFind> getDealMap(List<StorageDealByFind> deals) {
+        return deals.stream().peek(storageDeal -> {
+            //            String proposalCid = storageDeal.getProposalCid();
+            //            String subProposalCid = proposalCid.substring(6, proposalCid.length() - 2);
+            //
+            //            String pieceCid = storageDeal.getPieceCid();
+            //            String subPieceCid = pieceCid.substring(6, pieceCid.length() - 2);
+            //
+            //            String dataRef = storageDeal.getDataRef();
+            //            String subDataRef = dataRef.substring(14, 14+62);
+
+            JSONObject proposalCidObj = JSONObject.parseObject(storageDeal.getProposalCid());
+            String proposalCid = proposalCidObj.get("/").toString();
+            JSONObject pieceCidObj = JSONObject.parseObject(storageDeal.getPieceCid());
+            String pieceCid = pieceCidObj.get("/").toString();
+            JSONObject dataRef = JSONObject.parseObject(storageDeal.getDataRef());
+            JSONObject root = (JSONObject) dataRef.get("Root");
+            String cid = root.get("/").toString();
+
+            storageDeal.setCid(cid);
+            storageDeal.setProposalCid(proposalCid);
+            storageDeal.setPieceCid(pieceCid);
+        }).collect(Collectors.toMap(StorageDealByFind::getProposalCid, storageDealByFind -> storageDealByFind));
+    }
+
+    /**
      * 上传文件
      *
-     * @param file
+     * @param dto
      * @return
      */
     @Override
     @Transactional
-    public Result upload(MultipartFile file, Integer uid) throws IOException {
+    public Result upload(UploadDto dto, Integer uid) throws IOException {
         LocalDate nowDay = LocalDate.now();
         //服务器存储路径
+        MultipartFile file = dto.getFile();
         String filePath = "/var/video/" + nowDay + "/";
         String fileName = file.getOriginalFilename() + "_" + uid + "_" + LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
 
         //存储配置信息
         String url = minerValues.getUrl();
         String token = minerValues.getToken();
-        String miner = minerValues.getMiner();
+        String miner = dto.getMiner();
         String wallet = minerValues.getWallet();
 
         //保存文件

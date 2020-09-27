@@ -45,6 +45,11 @@ public class StorageDeal implements Serializable {
     private String dealCid;
 
     /**
+     * 查询和检索时需要使用的id
+     */
+    private String pieceCid;
+
+    /**
      * 交易id
      */
     private String dealId;
@@ -105,4 +110,8 @@ public class StorageDeal implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
+    /**
+     * 错误信息
+     */
+    private String message;
 }

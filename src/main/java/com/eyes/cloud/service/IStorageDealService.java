@@ -2,6 +2,7 @@ package com.eyes.cloud.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eyes.cloud.common.dto.Result;
+import com.eyes.cloud.dto.inDto.storageDeal.UploadDto;
 import com.eyes.cloud.entity.StorageDeal;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author AC
@@ -18,6 +19,7 @@ import java.io.IOException;
 public interface IStorageDealService extends IService<StorageDeal> {
     /**
      * 获取日期分类列表
+     *
      * @param uid
      * @return
      */
@@ -25,24 +27,40 @@ public interface IStorageDealService extends IService<StorageDeal> {
 
     /**
      * 获取某日期下的内容列表
+     *
      * @param uid
      * @param day
      * @return
      */
-    Result getList(Integer uid,String day);
+    Result getList(Integer uid, String day);
 
     /**
      * 详情获取
+     *
      * @param uid
      * @param id
      * @return
      */
-    Result getById(Integer uid,String id);
+    Result getById(Integer uid, String id);
+
+    /**
+     * 根据id获取文件
+     * @param uid
+     * @param id
+     * @return
+     */
+    String getFileById(Integer uid, String id);
 
     /**
      * 上传文件
-     * @param file
+     *
+     * @param dto
      * @return
      */
-    Result upload(MultipartFile file,Integer uid) throws IOException;
+    Result upload(UploadDto dto, Integer uid) throws IOException;
+
+    /**
+     *开始执行交易表状态刷新任务
+     */
+    void refreshDealsList();
 }
