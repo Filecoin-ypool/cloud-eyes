@@ -8,12 +8,12 @@
             <div class="login-content">
                 <img src="../assets/logo.png" alt="">
                 <div class="item-wrapper">
-                    <input type="text" placeholder="Username">
-                    <input type="password" placeholder="Password">
+                    <input type="text" placeholder="Username" v-model="formItem.username">
+                    <input type="password" placeholder="Password" v-model="formItem.password">
                 </div>
             </div>
             <div slot="footer">
-                <Button type="primary" size="large" @click="handleSubmit('formValidate')">Sign in</Button>
+                <Button type="primary" size="large" @click="handleSubmit('formValidate')">{{formItem.title}}</Button>
                 <Button type="text" size="large" @click="cancel">取消</Button>
             </div>
         </Modal>
@@ -27,6 +27,7 @@
         watch: {
             modify: function () {
                 console.log("modify", this.modify)
+                this.formItem = this.modify;
             },
         },
         data() {
@@ -34,11 +35,43 @@
                 formItem: {
                     username: '',
                     password: '',
+                    type: 0,
+                    title: 'Sign in'
                 },
             }
         },
         methods: {
             cancel() {
+                this.$parent.cancel();
+            },
+            //提交
+            async handleSubmit() {
+                if (this.formItem.username == '') {
+                    this.$Message.error('用户名不能为空');
+                } else if (this.formItem.password == '') {
+                    this.$Message.error('密码不能为空');
+                } else {
+                    let form = {
+                        username: this.formItem.username,
+                        password: this.formItem.password
+                    }
+                    if (this.formItem.type == 0) { //登录
+                        this.login(form)
+                    } else {//注册
+                        this.register(form)
+                    }
+                }
+            },
+            //注册
+            async register(form) {
+                await this.$api.signUp(form)
+                this.$Message.success("注册成功，请重新登录")
+                this.$parent.cancel();
+            },
+            //登录
+            async login(form) {
+                let token = await this.$api.signIn(form)
+                localStorage.setItem("token", token);
                 this.$parent.cancel();
             }
         }
