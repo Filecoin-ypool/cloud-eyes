@@ -15,6 +15,8 @@
             </div>
             <div class="upload-button">
                 <Upload
+                        :default-file-list="defaultList"
+                        :on-success="response =>onSuccess(response)"
                         size="large"
                         :headers="{
                             token
@@ -36,9 +38,10 @@
                 file: null,
                 loadingStatus: false,
                 formItem: {
-                    miner: ''
+                    miner: 't01800'
                 },
-                token: ''
+                token: '',
+                defaultList:[]
             }
         },
         props: ['modal'],
@@ -59,6 +62,12 @@
                 } else {
                     this.token = null
                 }
+            },
+            //上传成功
+            onSuccess(res) {
+                console.log("文件,",res)
+                this.defaultList=[]
+                this.$Message.success("upload success")
             }
         }
     }

@@ -1,9 +1,17 @@
 <template>
     <div class="video-list">
-        <div v-for="(item,index) in list" :key="index" @click="play(item)">
-            <img :src="item.img" alt="">
-            <span class="video-name">{{item.fileName}}</span>
-        </div>
+        <template v-for="(item,index) in list">
+            <div @click="play(item)" :key="index" v-if="item.status==5">
+                <img :src="item.img" alt="">
+                <span style="color: #2DAFE0" class="video-name">{{item.fileName}}</span>
+                <span style="color: #2DAFE0">存储成功</span>
+            </div>
+            <div :key="index" v-else @click="play(item)">
+                <img :src="item.img" alt="">
+                <span class="video-name">{{item.fileName}}</span>
+                <span>存储中...</span>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -12,38 +20,7 @@
         name: "VideoList",
         props: ['list'],
         data() {
-            return {
-                //     list: [
-                //         {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         }, {
-                //             img: require(`@/assets/home/img-video.png`),
-                //             name: '2020100201'
-                //         },
-                //     ]
-            }
+            return {}
         },
         watch: {
             list: function () {
@@ -55,7 +32,11 @@
         methods: {
             //播放
             play(item) {
-                console.log(item)
+                if (item.status != 5) {
+                    this.$Message.error('存储中，无法播放');
+                } else {
+                    this.$emit('event2', item.id)
+                }
             }
         }
     }
@@ -85,6 +66,7 @@
 
     .video-name {
         margin-top: 20px;
+        margin-bottom: 10px;
     }
 
     img {
