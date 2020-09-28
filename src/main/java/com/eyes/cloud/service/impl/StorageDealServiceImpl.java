@@ -77,7 +77,12 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
     @Override
     public Result getList(Integer uid, String day) {
         List<StorageDealOutDto> list = baseMapper.getList(uid, day);
-        return Result.ok(list);
+        List<StorageDealOutDto> collect = list.stream().peek(storageDealOutDto -> {
+            String fileName = storageDealOutDto.getFileName();
+            String substring = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length() - 16);
+            storageDealOutDto.setFileName(substring);
+        }).collect(Collectors.toList());
+        return Result.ok(collect);
     }
 
     /**
