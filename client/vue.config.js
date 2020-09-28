@@ -5,7 +5,8 @@ module.exports = {
         proxy: {
             "/api": {
                 // target: "http://127.0.0.1:8001/api/v1", // 需要跨域的目标url，我这里用到的是豆瓣API
-                target: "http://171.214.13.227:8033/api/v1", // 需要跨域的目标url，我这里用到的是豆瓣API
+                // target: "http://171.214.13.227:8033/api/v1", // 需要跨域的目标url，我这里用到的是豆瓣API
+                target: "http://192.168.1.125:8001/api/v1", // 需要跨域的目标url，我这里用到的是豆瓣API
                 changeOrigin: true, // 将基于名称的虚拟托管网站的选项，如果不配置，请求会报404
                 ws: true,
                 pathRewrite: {

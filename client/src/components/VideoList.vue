@@ -44,7 +44,7 @@
 
 <style scoped>
     .video-list {
-        margin: 50px 120px;
+        margin: 50px 60px 50px 180px;
         display: flex;
         flex-wrap: wrap;
         max-height: 350px;
