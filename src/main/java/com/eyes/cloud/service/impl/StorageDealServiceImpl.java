@@ -77,7 +77,12 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
     @Override
     public Result getList(Integer uid, String day) {
         List<StorageDealOutDto> list = baseMapper.getList(uid, day);
-        return Result.ok(list);
+        List<StorageDealOutDto> collect = list.stream().peek(storageDealOutDto -> {
+            String fileName = storageDealOutDto.getFileName();
+            String substring = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length() - 16);
+            storageDealOutDto.setFileName(substring);
+        }).collect(Collectors.toList());
+        return Result.ok(collect);
     }
 
     /**
@@ -227,7 +232,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         JSONObject body = JSONObject.parseObject(bodyStr);
         JSONArray result = (JSONArray) body.get("result");
         List<StorageDealByFind> deals = result.toJavaList(StorageDealByFind.class);
-        System.out.println(deals);
+//        System.out.println(deals);
 
         Map<String, StorageDealByFind> dealMap = getDealMap(deals);
 
@@ -379,6 +384,9 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
 
         //发起http请求
         String bodyStr = sendHttpRequest(url, token, jsonMap);
+        System.out.println("+++++++++++++发起交易++++++++++");
+        System.out.println(bodyStr);
+        System.out.println("+++++++++++++发起交易++++++++++");
         //获取json对象
         JSONObject result = getJsonObject(bodyStr);
         return result.get("/").toString();
@@ -410,8 +418,11 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
                         HttpUtil.generatePostJson(jsonMap, token),
                         String.class
                 );
-
-        return apiResponse.getBody();
+        String body = apiResponse.getBody();
+//        System.out.println("+++++++++++++++++++++++");
+//        System.out.println(body);
+//        System.out.println("+++++++++++++++++++++++");
+        return body;
     }
 
     /**
@@ -436,6 +447,9 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         jsonMap.put("params", jsonArray);
 
         String bodyStr = sendHttpRequest(url, token, jsonMap);
+        System.out.println("+++++++++++++import文件到fil系统++++++++++");
+        System.out.println(bodyStr);
+        System.out.println("+++++++++++++import文件到fil系统++++++++++");
         JSONObject result = getJsonObject(bodyStr);
         JSONObject root = (JSONObject) result.get("Root");
         String cid = root.get("/").toString();

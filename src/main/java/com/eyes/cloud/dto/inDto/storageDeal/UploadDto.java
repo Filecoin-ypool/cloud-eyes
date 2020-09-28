@@ -1,6 +1,7 @@
 package com.eyes.cloud.dto.inDto.storageDeal;
 
 import lombok.Data;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -13,5 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class UploadDto {
     MultipartFile file;
-    private String miner="t01800";
+    private String miner;
+
+    public void setMiner(String miner) {
+        if (StringUtils.isEmpty(miner) || "null".equals(miner)) {
+            miner = "t010400";
+        }
+        this.miner = miner;
+    }
 }

@@ -12,8 +12,8 @@ spring:
     database: 8
   servlet:
     multipart:
-      max-file-size: 500MB
-      max-request-size: 500MB
+      max-file-size: 5000MB
+      max-request-size: 5000MB
 # 打印sql
 logging:
   level:
@@ -29,7 +29,7 @@ server:
 http_pool:
   max_total: 200
   default_max_per_route: 100
-  connect_timeout: 6000000
-  connection_request_timeout: 6000000
-  socket_timeout: 6000000
+  connect_timeout: 60000000
+  connection_request_timeout: 60000000
+  socket_timeout: 60000000
   validate_after_inactivity: 2000
