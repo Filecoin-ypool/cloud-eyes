@@ -70,27 +70,6 @@ steps:
   #      event: [ push ]
   #  -
   ############################################################################################################################
-#
-  - name: deployTest
-    image: appleboy/drone-ssh
-    settings:
-      host: 118.190.88.226
-      port: 22
-      user: root
-      password: Wlp71512121
-      script:
-        - docker rmi -f registry.cn-hangzhou.aliyuncs.com/ypool/admin-vue
-        - echo "login docker"
-        - echo "login success, pulling...+++"
-        - docker pull registry.cn-hangzhou.aliyuncs.com/ypool/admin-vue
-        - echo "image running"
-        - docker stop ypool-admin-vue
-        - docker rm ypool-admin-vue
-        - docker run --name ypool-admin-vue -p 8099:80 -d registry.cn-hangzhou.aliyuncs.com/ypool/admin-vue
-        - echo "run success"
-    when:
-      branch: [dev,master]
-      event: [ push ]
   ############################################################################################################################
 
 volumes: #这里是存储卷定义
