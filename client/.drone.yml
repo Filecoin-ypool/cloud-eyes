@@ -55,20 +55,6 @@ steps:
       branch: [dev,master]
       event: [ push ]
   ############################################################################################################################
-  #  - name: RancherTest #第四步，通知rancher更新
-  #    image: registry.cn-shanghai.aliyuncs.com/xunshi/rancher-cli:relese
-  #    settings:
-  #      url: https://duyouli8888.com
-  #      project: xunshi-test
-  #      namespace: cqlj-kechuang-test
-  #      server: lj-xietong-admin
-  #      image: registry.cn-shanghai.aliyuncs.com/xunshi/lj-xietong-admin-test:${DRONE_BUILD_NUMBER}
-  #      bearer_token:
-  #        from_secret: rancher_token
-  #    when:
-  #      branch: TestLoop
-  #      event: [ push ]
-  #  -
   ############################################################################################################################
   ############################################################################################################################
 
