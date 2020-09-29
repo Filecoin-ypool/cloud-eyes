@@ -2,64 +2,57 @@ kind: pipeline
 name: ac
 steps:
   ############################################################################################################################
-  ############################################################################################################################
-  - name: MavenBuild #第一步：maven编译1
+  - name: NodeBuild_Test #第二部：node编译
     #    privileged: true
-    image: maven:3.6.3-jdk-8 #使用maven3.6.3+JDK8环境，这是官方镜像
-    volumes: #定义存储卷，不同于我们的Ceph这里的存储卷是主机路径
-      - name: maven_cache #使用存储卷的名称
-        path: /root/.m2 #容器的路径，这里面有配置和本地仓库
+    image: node:10.15.3-alpine #采用node 10.15.3版本，和我们本地一致，官方镜像
+    volumes: #定义yarn的本地存储，之后全部采用yarn缓存，加速编译
+      - name: yarn_cache
+        path: /usr/local/share/.cache/yarn/v4
     commands: #执行命令
-      - mvn clean package -DskipTests -X
-    when: #这个步骤的执行条件1
-      branch: master  #只有master分支会执行这个步骤
-      event: [ push ] #通过push事件触发执行
-  ############################################################################################################################
-  - name: DockerBuild #第三部：打包docker
-    image: plugins/docker #这是Drone官方提供的Docker插件镜像，其实完全可以用官方镜像
-    settings:
-      username: 从不卖萌好ac
-      password: q1a2z3qq.
-      repo: registry.cn-hangzhou.aliyuncs.com/ypool/rsa #镜像地址
-      registry: registry.cn-hangzhou.aliyuncs.com #仓库地址
-      tags:
-        - ${DRONE_BUILD_NUMBER} #tags，这里是Drone的一个变量，也可以使用其他
-        - latest
+      - yarn config set registry https://registry.npm.taobao.org #淘宝源
+      - yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass #淘宝sass
+      - yarn install #添加依赖
+      #      - npm config set registry https://registry.npm.taobao.org -g
+      #      - npm config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+      #      - npm install
+      - npm run build:prod #编译
     when:
-      branch: master
+      branch: [dev,master]
       event: [ push ]
+
   ############################################################################################################################
-  ############################################################################################################################
-  ############################################################################################################################
-  #  - -------------------------------------------------------------------------------------------------------------------------
-  #  - -------------------------------------------------------------------------------------------------------------------------
-  #  - -------------------------------------------------------------------------------------------------------------------------
-  #  - -------------------------------------------------------------------------------------------------------------------------
-  ############################################################################################################################
-  - name: MavenBuild_Test #第一步：maven编译1
-    #    privileged: true
-    image: maven:3.6.3-jdk-8 #使用maven3.6.3+JDK8环境，这是官方镜像
-    volumes: #定义存储卷，不同于我们的Ceph这里的存储卷是主机路径
-      - name: maven_cache #使用存储卷的名称
-        path: /root/.m2 #容器的路径，这里面有配置和本地仓库
-    commands: #执行命令
-      - mvn clean package -DskipTests
-    when: #这个步骤的执行条件1
-      branch: dev  #只有master分支会执行这个步骤
-      event: [ push ] #通过push事件触发执行
+#  - name: MavenBuild_Test #第一步：maven编译1
+#    #    privileged: true
+#    image: maven:3.6.3-jdk-8 #使用maven3.6.3+JDK8环境，这是官方镜像
+#    volumes: #定义存储卷，不同于我们的Ceph这里的存储卷是主机路径
+#      - name: maven_cache #使用存储卷的名称
+#        path: /root/.m2 #容器的路径，这里面有配置和本地仓库
+#    commands: #执行命令
+#      - mvn clean package -DskipTests
+#    when: #这个步骤的执行条件
+#      branch: TestLoop  #只有master分支会执行这个步骤
+#      event: [ push ] #通过push事件触发执行
+
   ############################################################################################################################
   - name: DockerBuild_Test #第三部：打包docker
+    #    privileged: true
     image: plugins/docker #这是Drone官方提供的Docker插件镜像，其实完全可以用官方镜像
     settings:
       username: 从不卖萌好ac
       password: q1a2z3qq.
-      repo: registry.cn-hangzhou.aliyuncs.com/ypool/rsa #镜像地址
+      repo: registry.cn-hangzhou.aliyuncs.com/ypool/admin-vue #镜像地址
       registry: registry.cn-hangzhou.aliyuncs.com #仓库地址
+#      repo: registry-vpc.cn-hangzhou.aliyuncs.com/super-ac/ac #镜像地址
+#      registry: registry-vpc.cn-hangzhou.aliyuncs.com #仓库地址
       tags:
         - ${DRONE_BUILD_NUMBER} #tags，这里是Drone的一个变量，也可以使用其他
         - latest
+#      username: superac
+#      password: q1a2z3qq.
+#      repo: ac_gogs/test #镜像地址
+#      tags: ${DRONE_BUILD_NUMBER} #tags，这里是Drone的一个变量，也可以使用其他
     when:
-      branch: dev
+      branch: [dev,master]
       event: [ push ]
   ############################################################################################################################
   ############################################################################################################################
