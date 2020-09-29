@@ -33,5 +33,5 @@ public class Local implements Serializable {
 
     private LocalDateTime date;
 
-
+    private Long fileSize;
 }

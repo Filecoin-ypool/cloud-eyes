@@ -86,6 +86,8 @@ public class StorageDeal implements Serializable {
      */
     private String fileName;
 
+    private Long fileSize;
+
     /**
      * 存储交易状态
      */
