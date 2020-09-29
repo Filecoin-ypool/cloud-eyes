@@ -76,11 +76,12 @@ public class StorageDealController {
      * @return
      */
     @GetMapping("/get_file")
-    Result getFileById(HttpServletResponse response, HttpServletRequest request, @RequestParam String id) throws IOException {
+    void getFileById(HttpServletResponse response, HttpServletRequest request, @RequestParam String id) throws IOException {
         int uid = (int) request.getAttribute(Common.USER_ID);
         String filePath = storageDealService.getFileById(uid, id);
+//        String filePath="C:\\Users\\Me\\Desktop\\work\\ssss.mp4";
 
-        response.setHeader("Content-Disposition", "attachment;filename=" + "sss" + ".xml");
+        response.setHeader("Content-Disposition", "attachment;filename=" + "ssss" + ".mpr4");
         // 响应类型,编码
         response.setContentType("application/octet-stream;charset=UTF-8");
         // 形成输出流
@@ -99,7 +100,7 @@ public class StorageDealController {
             input.close();
             osOut.close();
         }
-        return Result.ok();
+//        return Result.ok();
     }
 
     /**

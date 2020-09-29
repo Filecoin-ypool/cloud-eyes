@@ -290,6 +290,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         LocalDate nowDay = LocalDate.now();
         //服务器存储路径
         MultipartFile file = dto.getFile();
+        long size = file.getSize();
         String filePath = "/var/video/" + nowDay + "/";
         String fileName = file.getOriginalFilename() + "_" + uid + "_" + LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
 
@@ -303,13 +304,13 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         saveFile(file, filePath + fileName);
 
         //import文件
-        String cid = importFile(fileName, filePath, url, token);
+        String cid = importFile(fileName, filePath, url, token, file.getSize());
 
         //发起交易
         String dealId = startDeal(cid, wallet, miner, url, token);
 
         //存储交易记录
-        saveData(uid, filePath + fileName, miner, wallet, cid, dealId);
+        saveData(uid, filePath + fileName, miner, wallet, cid, dealId, file.getSize());
 
         return Result.ok("文件上传成功!");
     }
@@ -324,7 +325,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
      * @param cid
      * @param dealId
      */
-    private void saveData(Integer uid, String fileAllPath, String miner, String wallet, String cid, String dealId) {
+    private void saveData(Integer uid, String fileAllPath, String miner, String wallet, String cid, String dealId,Long fileSize) {
         StorageDeal storageDeal = new StorageDeal();
         storageDeal.setCid(cid);
         storageDeal.setDealCid(dealId);
@@ -335,6 +336,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         storageDeal.setEpochPrice("500000000");
         storageDeal.setMinBlocksDuration("600000");
         storageDeal.setFileName(fileAllPath);
+        storageDeal.setFileSize(fileSize);
         storageDeal.setMiner(miner);
         storageDeal.setStatus(0);
         storageDeal.setUserId(uid);
@@ -431,7 +433,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
      * @param fileName
      * @param filePath
      */
-    private String importFile(String fileName, String filePath, String url, String token) {
+    private String importFile(String fileName, String filePath, String url, String token,Long fileSize) {
 
         Map<String, Object> jsonMap = new HashMap<>(6);
         jsonMap.put("id", 1);
@@ -460,6 +462,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         local.setCid(cid);
         local.setDate(LocalDateTime.now());
         local.setFile(filePath + fileName);
+        local.setFileSize(fileSize);
 
         boolean b = localService.save(local);
         if (!b) {
