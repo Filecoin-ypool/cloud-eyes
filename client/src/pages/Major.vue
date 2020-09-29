@@ -4,6 +4,9 @@
         <div class="major-wrapper">
             <eyes-left @event1="getList($event)" :type="type"/>
             <div class="content">
+                <div class="content-sta">
+                    <span>数据统计</span>
+                </div>
                 <video-play :id="id"/>
                 <video-list :list="list" @event2="getPlayUrl($event)"/>
             </div>

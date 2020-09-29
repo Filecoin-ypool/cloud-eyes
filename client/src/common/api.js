@@ -20,5 +20,8 @@ api.signUp = p => post('/api/f_user/register', p)
 //获取用户名
 api.getUsername = () => get("/api/f_user/get_user_name", null)
 
+//获取miner
+api.getMinerList = () => get('/api/miner/miner_list', null)
+
 export default api;
 

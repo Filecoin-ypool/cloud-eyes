@@ -16,7 +16,7 @@
             </div>
         </div>
         <login-form :modal="modal" :modify="modify"/>
-        <video-upload :modal="uploadModal"/>
+        <video-upload :modal="uploadModal" ref="myUpload"/>
     </div>
 </template>
 
@@ -74,6 +74,7 @@
             //上传
             upload() {
                 this.uploadModal = true
+                this.$refs.myUpload.getMiner()
             },
             //退出
             signOut() {

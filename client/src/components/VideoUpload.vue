@@ -11,7 +11,9 @@
                 @on-ok="ok">
             <div class="miner">
                 <span>miner</span>
-                <Input v-model="formItem.miner" size="large"/>
+                <Select v-model="formItem.miner" style="width:200px">
+                    <Option v-for="item in minerList" :value="item" :key="item">{{ item }}</Option>
+                </Select>
             </div>
             <div class="upload-button">
                 <Upload
@@ -38,15 +40,21 @@
                 file: null,
                 loadingStatus: false,
                 formItem: {
-                    miner: 't01800'
+                    miner: ''
                 },
                 token: '',
-                defaultList: []
+                defaultList: [],
+                minerList: [
+                    't02619',
+                    't01800'
+                ]
             }
         },
         props: ['modal'],
         mounted() {
             this.getToken()
+            this.getMiner()
+
         },
         methods: {
             cancel() {
@@ -63,9 +71,15 @@
                     this.token = null
                 }
             },
+            //获取miner
+            async getMiner() {
+                let list =await this.$api.getMinerList();
+                this.minerList = list
+                let index = Math.floor((Math.random() * this.minerList.length));
+                this.formItem.miner = this.minerList[index]
+            },
             //上传成功
             onSuccess(res) {
-                console.log("文件,", res)
                 this.defaultList = []
                 this.$Message.success(res.msg)
             }
