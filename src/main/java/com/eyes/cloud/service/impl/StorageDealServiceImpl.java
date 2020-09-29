@@ -333,7 +333,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         //存储时间(指成功传输到服务器)todo 大文件传输时间确认!
         storageDeal.setDate(LocalDateTime.now());
         //现在全部都是固定时间固定价格
-        storageDeal.setEpochPrice("500000000");
+        storageDeal.setEpochPrice("5000000000");
         storageDeal.setMinBlocksDuration("600000");
         storageDeal.setFileName(fileAllPath);
         storageDeal.setFileSize(fileSize);
@@ -377,7 +377,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
                 "            }," +
                 "            \"Wallet\":\"" + wallet + "\"," +
                 "            \"Miner\": \"" + miner + "\"," +
-                "            \"EpochPrice\": \"500000000\"," +
+                "            \"EpochPrice\": \"5000000000\"," +
                 "            \"MinBlocksDuration\": 600000" +
                 "        }";
         JSONObject jsonObject = JSONObject.parseObject(str);
