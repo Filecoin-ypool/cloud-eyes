@@ -75,6 +75,7 @@
             upload() {
                 this.uploadModal = true
                 this.$refs.myUpload.getMiner()
+                this.$refs.myUpload.getToken()
             },
             //退出
             signOut() {
