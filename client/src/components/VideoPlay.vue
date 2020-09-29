@@ -32,13 +32,13 @@
                     poster: "http://39.106.117.192:8080/static/indexImg.png", //你的封面地址（覆盖在视频上面的图片）
                     width: document.documentElement.clientWidth,
                     notSupportedMessage: '此视频暂无法播放，请稍后再试' //允许覆盖Video.js无法播放媒体源时显示的默认信息。
-                }
+                },
+                address: '',
             }
         },
         props: ['id'],
         watch: {
             id: function () {
-                console.log("dadsdsadsadsdsd;", this.id)
                 this.playerOptions.sources[0].src = 'api/storage_deal/get_file?id=' + this.id
             }
         }

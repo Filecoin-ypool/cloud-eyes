@@ -12,7 +12,7 @@ import {Spin,LoadingBar,Message} from 'view-design'
 //     axios.defaults.baseURL = 'http://127.0.0.1:8080';
 // }
 
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 100000;
 
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 /**

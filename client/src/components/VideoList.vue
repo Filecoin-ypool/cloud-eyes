@@ -1,7 +1,7 @@
 <template>
     <div class="video-list">
         <template v-for="(item,index) in list">
-            <div @click="play(item)" :key="index" v-if="item.status==5">
+            <div @click="play(item)" :key="index" v-if="item.status==7">
                 <img :src="item.img" alt="">
                 <span style="color: #2DAFE0" class="video-name">{{item.fileName}}</span>
                 <span style="color: #2DAFE0">存储成功</span>
@@ -32,7 +32,7 @@
         methods: {
             //播放
             play(item) {
-                if (item.status != 5) {
+                if (item.status != 7) {
                     this.$Message.error('存储中，无法播放');
                 } else {
                     this.$emit('event2', item.id)

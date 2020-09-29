@@ -41,7 +41,7 @@
                     miner: 't01800'
                 },
                 token: '',
-                defaultList:[]
+                defaultList: []
             }
         },
         props: ['modal'],
@@ -65,9 +65,9 @@
             },
             //上传成功
             onSuccess(res) {
-                console.log("文件,",res)
-                this.defaultList=[]
-                this.$Message.success("upload success")
+                console.log("文件,", res)
+                this.defaultList = []
+                this.$Message.success(res.msg)
             }
         }
     }
