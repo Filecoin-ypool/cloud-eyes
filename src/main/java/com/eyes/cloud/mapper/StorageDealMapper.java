@@ -1,6 +1,7 @@
 package com.eyes.cloud.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.eyes.cloud.dto.outDto.storageDeal.StatisticsDto;
 import com.eyes.cloud.dto.outDto.storageDeal.StorageDealDayList;
 import com.eyes.cloud.dto.outDto.storageDeal.StorageDealOutDto;
 import com.eyes.cloud.entity.StorageDeal;
@@ -30,4 +31,11 @@ public interface StorageDealMapper extends BaseMapper<StorageDeal> {
      * @return
      */
     List<StorageDealOutDto> getList(Integer uid,String day);
+
+    /**
+     * 统计查询
+     * @param uid
+     * @return
+     */
+    List<StatisticsDto> statistics(Integer uid);
 }

@@ -116,4 +116,10 @@ public class StorageDealController {
         int uid = (int) request.getAttribute(Common.USER_ID);
         return storageDealService.upload(dto, uid);
     }
+
+    @PostMapping("/statistics")
+    Result statistics(HttpServletRequest request){
+        int uid = (int) request.getAttribute(Common.USER_ID);
+        return storageDealService.statistics(uid);
+    }
 }
