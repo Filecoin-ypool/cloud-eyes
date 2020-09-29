@@ -14,6 +14,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 /**
@@ -62,6 +64,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         //web通道验证
         if (verifyToken) {
             String token = request.getHeader("token");
+            System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ":" + token);
             if (StringUtils.isEmpty(token)) {
 //                throw new BusinessException(ResCodeEnum.TOKEN_ERROR);
                 request.setAttribute(Common.USER_ID, 0);
