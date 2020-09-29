@@ -5,10 +5,6 @@
                 <img src="../assets/logo.png" alt="">
             </div>
             <div>
-                <!--<Upload action="//jsonplaceholder.typicode.com/posts/" class="upload">-->
-                <!--<Button icon="ios-cloud-upload-outline" type="primary" size="large">Upload Surveillance Video-->
-                <!--</Button>-->
-                <!--</Upload>-->
                 <Button icon="ios-cloud-upload-outline"
                         type="primary" size="large" @click="upload">
                     Upload Surveillance Video
@@ -73,6 +69,7 @@
                 } else {
                     this.username = ''
                 }
+                this.$parent.changeType()
             },
             //上传
             upload() {

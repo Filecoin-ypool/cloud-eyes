@@ -2,10 +2,10 @@
     <div>
         <eyes-header/>
         <div class="major-wrapper">
-            <eyes-left @event1="getList($event)"/>
+            <eyes-left @event1="getList($event)" :type="type"/>
             <div class="content">
-                <video-play/>
-                <video-list :list="list"/>
+                <video-play :id="id"/>
+                <video-list :list="list" @event2="getPlayUrl($event)"/>
             </div>
         </div>
     </div>
@@ -27,13 +27,28 @@
         },
         data() {
             return {
-                list: []
+                list: [],
+                id: '',
+                type: ''
             }
         },
         methods: {
             getList(data) {
-                console.log("data", data)
                 this.list = data
+                if (this.list.length > 0) {
+                    this.list.forEach(item => {
+                        if (item == 5) {
+                            this.id = item.id
+                            return
+                        }
+                    })
+                }
+            },
+            getPlayUrl(id) {
+                this.id = id
+            },
+            changeType() {
+                this.type = Math.ceil(Math.random() * 10)
             }
         }
     }
