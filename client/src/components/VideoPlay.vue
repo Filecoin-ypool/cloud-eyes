@@ -27,7 +27,7 @@
                     fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                     sources: [{
                         type: 'video/mp4',
-                        src: 'api/storage_deal/get_file?id=7602273d00f6594d42e6ec7f909347ab'
+                        src: ''
                     }],
                     poster: "http://39.106.117.192:8080/static/indexImg.png", //你的封面地址（覆盖在视频上面的图片）
                     width: document.documentElement.clientWidth,
@@ -39,7 +39,8 @@
         props: ['id'],
         watch: {
             id: function () {
-                this.playerOptions.sources[0].src = 'api/storage_deal/get_file?id=' + this.id
+                //暂时不播放
+                // this.playerOptions.sources[0].src = 'api/storage_deal/get_file?id=' + this.id
             }
         }
     }
