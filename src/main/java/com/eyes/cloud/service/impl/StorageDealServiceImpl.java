@@ -290,6 +290,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         LocalDate nowDay = LocalDate.now();
         //服务器存储路径
         MultipartFile file = dto.getFile();
+        long size = file.getSize();
         String filePath = "/var/video/" + nowDay + "/";
         String fileName = file.getOriginalFilename() + "_" + uid + "_" + LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
 
