@@ -73,7 +73,7 @@
             },
             //获取miner
             async getMiner() {
-                let list =await this.$api.getMinerList();
+                let list = await this.$api.getMinerList();
                 this.minerList = list
                 let index = Math.floor((Math.random() * this.minerList.length));
                 this.formItem.miner = this.minerList[index]
@@ -81,7 +81,12 @@
             //上传成功
             onSuccess(res) {
                 this.defaultList = []
-                this.$Message.success(res.msg)
+                this.$Message.success({
+                    content: res.msg,
+                    duration:0,
+                    closable:true
+                })
+                this.$parent.getUsername()
             }
         }
     }

@@ -70,6 +70,7 @@
                     this.username = ''
                 }
                 this.$parent.changeType()
+                this.$parent.getStatistics()
             },
             //上传
             upload() {
