@@ -23,5 +23,8 @@ api.getUsername = () => get("/api/f_user/get_user_name", null)
 //获取miner
 api.getMinerList = () => get('/api/miner/miner_list', null)
 
+//上传数据统计
+api.statistics = () => get('/api/storage_deal/statistics', null)
+
 export default api;
 

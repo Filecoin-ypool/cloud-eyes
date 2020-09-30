@@ -5,7 +5,15 @@
             <eyes-left @event1="getList($event)" :type="type"/>
             <div class="content">
                 <div class="content-sta">
-                    <span>数据统计</span>
+                    <span class="content-sta-title">数据统计</span>
+                    <div class="content-sta-success">
+                        <span>存储成功容量</span>
+                        <span>{{this.success}}</span>
+                    </div>
+                    <div class="content-sta-total">
+                        <span>已传容量</span>
+                        <span style="color: #2DAFE0">{{this.total}}</span>
+                    </div>
                 </div>
                 <video-play :id="id"/>
                 <video-list :list="list" @event2="getPlayUrl($event)"/>
@@ -19,6 +27,7 @@
     import EyesLeft from "../components/EyesLeft"
     import VideoList from "../components/VideoList"
     import VideoPlay from "../components/VideoPlay"
+    import {getSize} from "../common/util"
 
     export default {
         name: "Major",
@@ -32,8 +41,13 @@
             return {
                 list: [],
                 id: '',
-                type: ''
+                type: '',
+                total: 0,
+                success: 0
             }
+        },
+        mounted() {
+            this.getStatistics()
         },
         methods: {
             getList(data) {
@@ -52,6 +66,19 @@
             },
             changeType() {
                 this.type = Math.ceil(Math.random() * 10)
+            },
+            //统计数据
+            async getStatistics() {
+                let data = await this.$api.statistics();
+                let total = 0
+                let success = 0
+                await data.forEach(item => {
+                    total = Number(total) + Number(item.sum)
+                    if (item.status == 7)
+                        success = item.sum
+                })
+                this.total = getSize(total, 2)
+                this.success = getSize(success, 2)
             }
         }
     }
@@ -66,5 +93,43 @@
     .content {
         width: 100%;
         background-color: #F6F6F6;
+    }
+
+    .content-sta {
+        display: flex;
+        padding-left: 220px;
+        margin-top: 30px;
+        align-items: center;
+    }
+
+    .content-sta-title {
+        font-size: 22px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    .content-sta-success {
+        margin-right: 20px;
+        font-size: 18px;
+    }
+
+    .content-sta-success > span:first-child {
+        margin-right: 5px;
+    }
+
+    .content-sta-success > span:last-child {
+        margin-right: 5px;
+        color: #ee3f3f;
+        font-weight: 500;
+    }
+
+    .content-sta-total {
+        margin-right: 20px;
+        font-size: 18px;
+    }
+
+
+    .content-sta-total > span:first-child {
+        margin-right: 5px;
     }
 </style>
