@@ -63,4 +63,11 @@ public interface IStorageDealService extends IService<StorageDeal> {
      *开始执行交易表状态刷新任务
      */
     void refreshDealsList();
+
+    /**
+     * 统计信息返回
+     * @param uid
+     * @return
+     */
+    Result statistics(Integer uid);
 }

@@ -244,6 +244,7 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
                 storageDeal.setDealId(dealByFind.getDealId());
                 storageDeal.setMessage(dealByFind.getMessage());
                 storageDeal.setStatus(dealByFind.getState());
+                storageDeal.setFileSize(Long.parseLong(dealByFind.getSize()));
             }
         }).collect(Collectors.toList());
 
@@ -497,5 +498,17 @@ public class StorageDealServiceImpl extends ServiceImpl<StorageDealMapper, Stora
         } catch (IOException e) {
             throw new BusinessException("文件上传保存失败!");
         }
+    }
+
+    /**
+     * 统计信息返回
+     *
+     * @param uid
+     * @return
+     */
+    @Override
+    public Result statistics(Integer uid) {
+        List<StatisticsDto> dtoList = baseMapper.statistics(uid);
+        return Result.ok(dtoList);
     }
 }

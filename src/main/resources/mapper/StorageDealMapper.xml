@@ -23,4 +23,17 @@
             sd.days = TO_DAYS( #{param2} )
             and sd.user_id=#{param1}
     </select>
+
+    <select id="statistics" resultType="com.eyes.cloud.dto.outDto.storageDeal.StatisticsDto">
+        SELECT
+            SUM( sd.file_size ) AS sum,
+            sd.`status`,
+            COUNT(*) as count
+        FROM
+            storage_deal sd
+        WHERE
+            sd.user_id = #{0}
+        GROUP BY
+            `status`
+    </select>
 </mapper>
