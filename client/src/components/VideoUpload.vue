@@ -11,7 +11,10 @@
                 @on-ok="ok">
             <div class="miner">
                 <span>miner</span>
-                <Select v-model="formItem.miner" style="width:200px">
+                <Select v-model="formItem.miner"
+                        filterable allow-create
+                        style="width:200px"
+                        @on-create="handleCreate">
                     <Option v-for="item in minerList" :value="item" :key="item">{{ item }}</Option>
                 </Select>
             </div>
@@ -87,6 +90,9 @@
                     closable:true
                 })
                 this.$parent.getUsername()
+            },
+            handleCreate(val){
+                this.minerList.push(val)
             }
         }
     }
