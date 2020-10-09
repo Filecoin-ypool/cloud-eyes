@@ -4,15 +4,23 @@
         <div class="major-wrapper">
             <eyes-left @event1="getList($event)" :type="type"/>
             <div class="content">
-                <div class="content-sta">
-                    <span class="content-sta-title">数据统计</span>
-                    <div class="content-sta-success">
-                        <span>存储成功容量</span>
-                        <span>{{this.success}}</span>
+                <div class="content-header">
+                    <div class="content-sta">
+                        <span class="content-sta-title">数据统计</span>
+                        <div class="content-sta-success">
+                            <span>存储成功容量</span>
+                            <span>{{this.success}}</span>
+                        </div>
+                        <div class="content-sta-total">
+                            <span>已传容量</span>
+                            <span style="color: #2DAFE0">{{this.total}}</span>
+                        </div>
                     </div>
-                    <div class="content-sta-total">
-                        <span>已传容量</span>
-                        <span style="color: #2DAFE0">{{this.total}}</span>
+                    <div class="provide">
+                        <a href="https://www.ypool.io/major/home" target="_blank">
+                            <img class="provide-img" src="../assets/home/logo-ypool.png" alt="">
+                        </a>
+                        <span>出品</span>
                     </div>
                 </div>
                 <video-play :id="id"/>
@@ -95,10 +103,33 @@
         background-color: #F6F6F6;
     }
 
-    .content-sta {
-        display: flex;
+    .content-header {
         padding-left: 220px;
         margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 230px;
+    }
+
+    .provide {
+        display: flex;
+        align-items: center;
+    }
+
+    .provide-img {
+        height: 30px;
+    }
+
+    .provide > span {
+        font-size: 18px;
+        color: #C0C0C0;
+        font-weight: 500;
+        margin-left: 5px;
+    }
+
+    .content-sta {
+        display: flex;
         align-items: center;
     }
 
