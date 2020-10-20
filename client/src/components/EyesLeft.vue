@@ -22,7 +22,6 @@
         props: ['type'],
         watch: {
             type: function () {
-                console.log("changeType,", this.type)
                 this.getList()
             }
         },

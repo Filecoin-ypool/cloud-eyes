@@ -11,6 +11,15 @@ api.getDayList = () => get('/api/storage_deal/day_List', null)
 //根据日前获取内容
 api.getListByDay = p => get("/api/storage_deal/list/" + p, null)
 
+//获取可下载列表
+api.getList = p => post('/api/storage_deal/page_list', p);
+
+//下载申请
+api.downApply = p => get('/api/storage_deal/apply_downLoad/' + p, null)
+
+//下载
+api.download = p => get('/api/storage_deal/download_file/' + p, null)
+
 //登录
 api.signIn = p => post("/api/f_user/login", p)
 

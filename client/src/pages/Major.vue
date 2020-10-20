@@ -1,7 +1,7 @@
 <template>
     <div>
         <eyes-header/>
-        <div class="major-wrapper">
+        <div class="major-wrapper" v-if="username!='admin'">
             <eyes-left @event1="getList($event)" :type="type"/>
             <div class="content">
                 <div class="content-header">
@@ -27,6 +27,9 @@
                 <video-list :list="list" @event2="getPlayUrl($event)"/>
             </div>
         </div>
+        <div v-else>
+            <down-list/>
+        </div>
     </div>
 </template>
 
@@ -34,12 +37,14 @@
     import EyesHeader from "../components/EyesHeader"
     import EyesLeft from "../components/EyesLeft"
     import VideoList from "../components/VideoList"
+    import DownList from '../components/DownList'
     import VideoPlay from "../components/VideoPlay"
     import {getSize} from "../common/util"
 
     export default {
         name: "Major",
         components: {
+            DownList,
             EyesHeader,
             EyesLeft,
             VideoList,
@@ -51,11 +56,13 @@
                 id: '',
                 type: '',
                 total: 0,
-                success: 0
+                success: 0,
+                username:'',
             }
         },
         mounted() {
             this.getStatistics()
+            this.username = localStorage.getItem("username")
         },
         methods: {
             getList(data) {
@@ -77,6 +84,7 @@
             },
             //统计数据
             async getStatistics() {
+                this.username = localStorage.getItem("username")
                 let data = await this.$api.statistics();
                 let total = 0
                 let success = 0
@@ -164,3 +172,5 @@
         margin-right: 5px;
     }
 </style>
+
+
