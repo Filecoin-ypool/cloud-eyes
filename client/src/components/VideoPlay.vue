@@ -40,7 +40,7 @@
         watch: {
             id: function () {
                 //暂时不播放
-                // this.playerOptions.sources[0].src = 'api/storage_deal/get_file?id=' + this.id
+                this.playerOptions.sources[0].src = 'api/storage_deal/get_file?id=' + this.id
             }
         }
     }
